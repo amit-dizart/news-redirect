@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirect Page</title>
+</head>
+<body>
+
+  <script>
+    function getQueryParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+
+    function redirectToApp() {
+      const newsId = getQueryParam('news');
+
+      const queryParams = {
+        newsId: newsId,
+      };
+
+      // Update the deep link to dizart.newsapp:///news
+      const deepLink = `dizart.newsapp:///news?${new URLSearchParams(queryParams).toString()}`;
+
+      // Set a timeout for redirection (e.g., 2 seconds)
+      const timeout = setTimeout(() => {
+        // Timeout triggered, app is not installed
+        alert("App is not installed. Please install the app.");
+      }, 2000);
+
+      // Try to open the app
+      window.location.href = deepLink;
+
+      // If the app is installed, cancel the timeout
+      window.addEventListener("pagehide", () => {
+        clearTimeout(timeout);
+      });
+    }
+
+    window.onload = redirectToApp;
+  </script>
+
+</body>
+</html>
